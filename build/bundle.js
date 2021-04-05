@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 1);
+/******/ 	return __webpack_require__(__webpack_require__.s = 3);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -71,12 +71,24 @@ module.exports = require("react");
 
 /***/ }),
 /* 1 */
+/***/ (function(module, exports) {
+
+module.exports = require("react-router-dom");
+
+/***/ }),
+/* 2 */
+/***/ (function(module, exports) {
+
+module.exports = require("react-helmet");
+
+/***/ }),
+/* 3 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var _express = __webpack_require__(2);
+var _express = __webpack_require__(4);
 
 var _express2 = _interopRequireDefault(_express);
 
@@ -99,54 +111,10 @@ app.listen(3000, function () {
 });
 
 /***/ }),
-/* 2 */
+/* 4 */
 /***/ (function(module, exports) {
 
 module.exports = require("express");
-
-/***/ }),
-/* 3 */
-/***/ (function(module, exports) {
-
-module.exports = require("react-dom/server");
-
-/***/ }),
-/* 4 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _react = __webpack_require__(0);
-
-var _react2 = _interopRequireDefault(_react);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var Home = function Home() {
-    return _react2.default.createElement(
-        "div",
-        null,
-        _react2.default.createElement(
-            "div",
-            null,
-            "This is a button"
-        ),
-        _react2.default.createElement(
-            "button",
-            { onClick: function onClick() {
-                    return console.log("button clicked");
-                } },
-            "Press me"
-        )
-    );
-};
-
-exports.default = Home;
 
 /***/ }),
 /* 5 */
@@ -156,41 +124,40 @@ exports.default = Home;
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 
 var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _server = __webpack_require__(3);
+var _server = __webpack_require__(6);
 
-var _Home = __webpack_require__(4);
-
-var _Home2 = _interopRequireDefault(_Home);
-
-var _reactRouterDom = __webpack_require__(6);
+var _reactRouterDom = __webpack_require__(1);
 
 var _Routes = __webpack_require__(7);
 
 var _Routes2 = _interopRequireDefault(_Routes);
 
+var _reactHelmet = __webpack_require__(2);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = function (req) {
-    var content = (0, _server.renderToString)(_react2.default.createElement(
-        _reactRouterDom.StaticRouter,
-        { location: req.path, context: {} },
-        _react2.default.createElement(_Routes2.default, null)
-    ));
-    return '\n            <html>\n            <head></head>\n            <body>\n            <div id="root">' + content + '</div>\n            <script src="bundle.js"></script>\n            </body>\n            </html>';
+  var content = (0, _server.renderToString)(_react2.default.createElement(
+    _reactRouterDom.StaticRouter,
+    { location: req.path, context: {} },
+    _react2.default.createElement(_Routes2.default, null)
+  ));
+  var helmet = _reactHelmet.Helmet.renderStatic();
+  return '\n            <html>\n            <head>\n             ' + helmet.title.toString() + '\n             ' + helmet.meta.toString() + '\n            </head>\n            <body>\n            <div id="root">' + content + '</div>\n            <script src="bundle.js"></script>\n            </body>\n            </html>';
 };
 
 /***/ }),
 /* 6 */
 /***/ (function(module, exports) {
 
-module.exports = require("react-router-dom");
+module.exports = require("react-dom/server");
 
 /***/ }),
 /* 7 */
@@ -207,9 +174,9 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactRouterDom = __webpack_require__(6);
+var _reactRouterDom = __webpack_require__(1);
 
-var _Home = __webpack_require__(4);
+var _Home = __webpack_require__(8);
 
 var _Home2 = _interopRequireDefault(_Home);
 
@@ -222,6 +189,61 @@ exports.default = function () {
         _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: "/", component: _Home2.default })
     );
 };
+
+/***/ }),
+/* 8 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactHelmet = __webpack_require__(2);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var Home = function Home() {
+
+  var head = function head() {
+    return _react2.default.createElement(
+      _reactHelmet.Helmet,
+      null,
+      _react2.default.createElement(
+        "title",
+        null,
+        "Demo"
+      ),
+      _react2.default.createElement("meta", { property: "og:title", content: "Content App" })
+    );
+  };
+
+  return _react2.default.createElement(
+    "div",
+    null,
+    head(),
+    _react2.default.createElement(
+      "div",
+      null,
+      "This is a button"
+    ),
+    _react2.default.createElement(
+      "button",
+      { onClick: function onClick() {
+          return console.log("button clicked");
+        } },
+      "Press me"
+    )
+  );
+};
+
+exports.default = Home;
 
 /***/ })
 /******/ ]);

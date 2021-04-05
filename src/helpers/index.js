@@ -1,8 +1,9 @@
 import React from 'react';
 import {renderToString} from 'react-dom/server';
-import Home from '../client/components/Home';
 import {StaticRouter} from 'react-router-dom';
 import Routes from "../client/Routes"
+import {Helmet} from "react-helmet"
+
 
 export default (req)=>{
     const content = renderToString(
@@ -10,9 +11,13 @@ export default (req)=>{
           <Routes/>
     </StaticRouter>
     );
+    const helmet = Helmet.renderStatic();
     return `
             <html>
-            <head></head>
+            <head>
+             ${helmet.title.toString()}
+             ${helmet.meta.toString()}
+            </head>
             <body>
             <div id="root">${content}</div>
             <script src="bundle.js"></script>
